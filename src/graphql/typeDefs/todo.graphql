@@ -1,0 +1,73 @@
+# GraphQLの型はTypeScriptと若干違う
+# https://qiita.com/NagaokaKenichi/items/d341dc092012e05d6606#graphql%E3%81%AE%E5%9E%8B%E3%81%A8%E3%81%AF
+# スカラー型
+# GraphQLには以下の5つのスカラー型が存在します。これら5つを総称してスカラー型と呼びます。
+
+# String（文字列型）
+# Int（整数型）
+# Float（浮動小数点型）
+# Boolean（論理型）
+# ID（ID型）
+
+# memo
+# String・ID は、JSONでstring型で表現される
+# Int・Float は、JSONでnumber型で表現される
+
+# 型の後ろの「!」は、必須という意味を持つ
+# 
+type Todo {
+  id: ID!
+  content: String!
+  done: Boolean!
+  createdAt: DateTime
+}
+
+# クエリ
+type Query {
+  listTodos: [Todo!]!
+}
+# 1.[Todo!]!：非nullのオブジェクトが必須
+# 2.Todo![]：Todoの中身がnullじゃないことを意味している
+# → でも上記は、Todo自体がnullかどうかは、チェックできていない。
+# でも中身がnullかチェックしてるなら親がnullだった時、子に問い合わせできないから上と同じ意味なんじゃないか？と思ってる
+# 3.Todo[]!：
+
+type Mutation {
+  addTodo(content: String!): Todo!
+  updateTodo(id: ID!, done: Boolean!): Todo!
+  deleteTodo(id: ID!): Todo!
+}
+
+# わかりやすそうな記事 https://zenn.dev/sjbworks/articles/0b34ce8aca6b72
+# fragmentで定義するとキャッシュされる。
+fragment TodoFragment on Todo {
+  id
+  content
+  done
+  createdAt
+}
+
+query ListTodos {
+  listTodos {
+    ...TodoFragment
+  }
+}
+
+# $は、変数を意味している。変数を使った値の登録、変更、削除
+mutation AddTodo($content: String!) {
+  addTodo(content: $content) {
+    ...TodoFragment
+  }
+}
+
+mutation UpdateTodo($id: ID!, $done: Boolean!) {
+  updateTodo(id: $id, done: $done) {
+    ...TodoFragment
+  }
+}
+
+mutation DeleteTodo($id: ID!) {
+  deleteTodo(id: $id) {
+    ...TodoFragment
+  }
+}
