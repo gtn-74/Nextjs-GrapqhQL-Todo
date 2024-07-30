@@ -3,7 +3,7 @@ CREATE TABLE "Todo" (
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "done" BOOLEAN NOT NULL DEFAULT false,
-    "createAt" TEXT NOT NULL,
+    "createdAt" TEXT NOT NULL,
 
     CONSTRAINT "Todo_pkey" PRIMARY KEY ("id")
 );

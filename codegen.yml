@@ -1,0 +1,50 @@
+# graphql code generatorの設定ファイル。
+# graphqlスキーマから型や、コードを自動生成する設定が含まれている
+
+# 生成されるファイルの出力先、ファイルに対する設定が記載されている
+generates:
+  # 下のパスにastをパースする
+  src/generated/schema.graphql:
+    # パース元を宣言。common.graphqlと、todo.graphql
+    schema:
+      - "src/graphql/typeDefs/**/*.graphql"
+    # プラグインでパースするデータ構造を決める  ast:データ構造。
+    plugins:
+      - schema-ast
+
+  # 下のパスにastをパースする
+  src/generated/resolvers-types.ts:
+    # パース元を宣言。common.graphqlと、todo.graphql
+    schema:
+      - "src/graphql/typeDefs/**/*.graphql"
+
+    # プラグインでパースするデータ構造を決める
+    plugins:
+      - typescript
+      - typescript-resolvers
+
+    config:
+      # 下のconfigでcontextの型を指定してる。これによって、リゾルバで使うContext型 prismaラップしてる型
+      contextType: "@/graphql/context/#Context"
+      # ORM関連
+      mapperTypeSuffix: Model
+      # graphqlのTodo型をprisma clientのTodo型でラップ
+      # schema.prismaで定義している。
+      mappers:
+        Todo: "@prisma/client#Todo"
+      scalars:
+        DateTime: string
+  src/generated/request.ts:
+    schema:
+      - "src/graphql/typeDefs/**/*.graphql"
+    documents:
+      - "src/graphql/typeDefs/**/*.graphql"
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      scalars:
+        DateTime: string
+
+# 上記設定により、GQL APIの型をTypescript

@@ -19,3 +19,6 @@ model Todo {
   done Boolean @default(false)
   createAt String
 }
+
+// model
+// フロントの人でも、

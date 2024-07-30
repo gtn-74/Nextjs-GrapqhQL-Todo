@@ -14,12 +14,11 @@
 # Int・Float は、JSONでnumber型で表現される
 
 # 型の後ろの「!」は、必須という意味を持つ
-# 
 type Todo {
   id: ID!
   content: String!
   done: Boolean!
-  createdAt: DateTime
+  createdAt: DateTime  # Dateで定義されている
 }
 
 # クエリ
@@ -71,3 +70,5 @@ mutation DeleteTodo($id: ID!) {
     ...TodoFragment
   }
 }
+
+# クエリ＝スキーマ
