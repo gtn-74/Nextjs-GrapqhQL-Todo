@@ -17,7 +17,7 @@ model Todo {
   id String @id @default(cuid()) // 主キー: @id、 初期値:@default  UUID的なランダムで生成されたid:cuid
   content String
   done Boolean @default(false)
-  createAt String
+  createdAt String
 }
 
 // model
