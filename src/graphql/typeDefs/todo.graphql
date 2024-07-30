@@ -46,6 +46,7 @@ fragment TodoFragment on Todo {
   createdAt
 }
 
+# ListTodosと呼ばれるクエリ名で、listTodosと呼ばれるフィールドを取得している
 query ListTodos {
   listTodos {
     ...TodoFragment
